@@ -3,52 +3,89 @@
 	<head>
 		<title>Hello jQuery</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script src="hello.js"></script>
-		<style type="text/css">
-			table {
-			font-family: arial, sans-serif;
-			border-collapse: collapse;
-			width: 100%;
-			}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			$.ajax({
+			url: "https://www.monsterindia.com/middleware/jobsearch?query=net&limit=25&sort=1"
+			}).then(function(data) {
+			$('.greeting-id').append(data.jobSearchStatus);
+			$('.greeting-content').append(data.jobSearchResponse.data[0].id);
+			$("ol").append("<li>list item <a href='javascript:void(0);'</a></li>"); 
 
-			td, th {
-			border: 1px solid #dddddd;
-			text-align: left;
-			padding: 8px;
-			}
+				var trHTML = '';
+				console.log(data.jobSearchResponse.data.length);
+				for(var i = 0; i < data.jobSearchResponse.data.length; i++)
+						{   
+						trHTML += 
+						'<tr><td>' + data.jobSearchResponse.data[i].jobId + 
+								'</td><td>' + data.jobSearchResponse.data[i].summary + 
+								'</td><td>' + data.jobSearchResponse.data[i].title + 
+								'</td><td>' + data.jobSearchResponse.data[i].locations +  
+								'</td><td>' + data.jobSearchResponse.data[i].updatedAt +  
+								'</td><td>' + data.jobSearchResponse.data[i].companyName +  
+								'</td><td>' + data.jobSearchResponse.data[i].postedBy +  
+								'</td><td>' + data.jobSearchResponse.data[i].skills +
+								'</td><td>' + data.jobSearchResponse.data[i].exp +
+								'</td></tr>';            
+						};
 
-			tr:nth-child(even) {
-			background-color: #dddddd;
-			}
-		</style>
-	</head>
+						$('#records_table').append(trHTML);
+						});
 
-	<body>
-		<form id="form1">  
-			Name :- <input type="text" name="name" id="name" />  
-			Surname:- <input type="text" name="surname" id="surname" />  
-			<input type="button" id="Save" value="Enter" />  
-		</form>
+						$("#myInput").on("keyup", function() {
+						var value = $(this).val().toLowerCase();
+						$("#records_table tr").filter(function() {
+						$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+					});
+					});
 
-		<div>
-			<p class="greeting-id">The ID is </p>
-			<p class="greeting-content">The content is </p>
-		</div>
+					});
+				</script>
+				<style type="text/css">
+					table {
+					font-family: arial, sans-serif;
+					border-collapse: collapse;
+					width: 100%;
+					}
 
-		<p>Search the table :
- 
-				<input id="myInput" type="text" placeholder="Search.."></p> 
-						<br><br>
-					<table id="records_table" border='1'>
-						<tr>
-							<th align="center" width="50">Id</th>
-							<th align="center" width="100">createdAt</th>
-							<th align="center" width="100">jobId</th>
-							<th align="center" width="100">Giris Tarih</th>
-							<th align="center" width="150">Degistirilme Tarih</th>
-							<th align="center" width="100">Ad Soyad</th>
-							<th align="center" width="100">Email</th>
-						</tr>
-					</table>
-				</body>
-			</html>
+					td, th {
+					border: 1px solid #dddddd;
+					text-align: left;
+					padding: 8px;
+					}
+
+					tr:nth-child(even) {
+					background-color: #dddddd;
+					}
+				</style>
+			</head>
+
+			<body>
+				<form id="form1">  
+					Name :- <input type="text" name="name" id="name" />  
+					Surname:- <input type="text" name="surname" id="surname" />  
+					<input type="button" id="Save" value="Enter" />  
+				</form>
+
+				<div>
+					<p class="greeting-id">The ID is </p>
+					<p class="greeting-content">The content is </p>
+				</div>
+
+				<p>Search the table :
+
+					<input id="myInput" type="text" placeholder="Search.."></p> 
+					<br><br>
+							<table id="records_table" border='1'>
+								<tr>
+									<th align="center" width="50">Id</th>
+									<th align="center" width="100">createdAt</th>
+									<th align="center" width="100">jobId</th>
+									<th align="center" width="100">Giris Tarih</th>
+									<th align="center" width="150">Degistirilme Tarih</th>
+									<th align="center" width="100">Ad Soyad</th>
+									<th align="center" width="100">Email</th>
+								</tr>
+							</table>
+						</body>
+					</html>
